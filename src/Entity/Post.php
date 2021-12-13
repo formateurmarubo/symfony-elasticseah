@@ -40,18 +40,20 @@ class Post
     private $content;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $publishedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="posts")
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="posts",cascade={"persist"})
+     * @ORM\OrderBy({"name": "ASC"})
      */
     private $tag;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts",)
      * @ORM\JoinColumn(nullable=false)
+     * 
      */
     private $author;
 
@@ -113,12 +115,12 @@ class Post
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeImmutable
+    public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTimeImmutable $publishedAt): self
+    public function setPublishedAt(\DateTime $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
 
