@@ -13,7 +13,7 @@ class HomeController extends AbstractController
     {
         //page accueil search et create blog after user is auth
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+            'controller_name' => 'Dashboard',
         ]);
     }
 }
