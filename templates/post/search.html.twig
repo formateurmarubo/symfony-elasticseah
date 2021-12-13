@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search Post!{% endblock %}
+
+{% block body %}
+ {{ encore_entry_script_tags('search') }}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .flash-success { color: green; }
+</style>
+
+<div class="example-wrapper">
+   
+   {% for message in app.flashes('success') %}
+            <div class="flash-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    <h1>{{ 'Elasticasearch' }}! ✅</h1>
+Akwaba {{app.user}}: votre mini moteur de recherche
+  
+   <form name="myForm" action="{{ path('post_search') }}" method="get">
+        <div class="form-group">
+            <input name="q"
+                   class="form-control search-field"
+                   placeholder="{{ 'post.search_for'|trans }}"
+                   autocomplete="off"
+                   value="{{ query }}"
+                   autofocus
+                   data-no-results-message="{{ 'post.search_no_results'|trans }}"
+            >
+        </div>
+    </form>
+    <div id="results">
+    </div>
+</div>
+{% endblock %}

@@ -62,6 +62,43 @@ class PostController extends AbstractController
         ]);
     }
 
+   
+    #[Route('/search',methods: ['GET'], name: 'post_search')]
+    public function postSearch(Request $request, PostRepository $posts)
+    {
+        $query = $request->query->get('q', '');
+        $limit = $request->query->get('l', 10);
+
+        if (!$request->isXmlHttpRequest()) {
+            return $this->render('post/search.html.twig', ['query' => $query]);
+        }
+        
+        try {
+            $foundPosts = $posts->findBySearchQuery($query, $limit);
+
+        } catch (\Throwable $th) {
+           echo "Exception Found - " . $th->getMessage() . "<br/>";
+        }
+        //dd($foundPosts);
+        $results = [];
+        foreach ($foundPosts as $post) {
+            $results[] = [
+                'title' => htmlspecialchars($post->getTitle(), \ENT_COMPAT | \ENT_HTML5),
+                'date' => $post->getPublishedAt()->format('M d, Y'),
+                'author' => htmlspecialchars($post->getAuthor()->getFullName(), \ENT_COMPAT | \ENT_HTML5),
+                'summary' => htmlspecialchars($post->getSummary(), \ENT_COMPAT | \ENT_HTML5),
+                'url' => $this->generateUrl('blog_post', ['slug' => $post->getSlug()]),
+            ];
+        }
+       // dd($this->json($results));
+        return $this->json($results);
+       /*
+        return $this->render('post/search.html.twig', [
+            'controller_name' => 'Post Search',
+            'posts'=>$posts,
+            'query' => $query
+        ]); */
+    }
 
 
 }
