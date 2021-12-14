@@ -63,7 +63,7 @@ class PostController extends AbstractController
     }
 
    
-    #[Route('/search',methods: ['GET'], name: 'post_search')]
+    #[Route('blog/search',methods: ['GET'], name: 'post_search')]
     public function postSearch(Request $request, PostRepository $posts)
     {
         $query = $request->query->get('q', '');
@@ -98,6 +98,13 @@ class PostController extends AbstractController
             'posts'=>$posts,
             'query' => $query
         ]); */
+    }
+
+    #[Route('/posts/{slug}', methods: ['GET'], name: 'blog_post')]
+    public function postShow(Post $post): Response
+    {
+        dd($post);
+        return $this->render('blog/post_show.html.twig', ['post' => $post]);
     }
 
 
